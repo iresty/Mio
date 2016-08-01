@@ -5,6 +5,9 @@ The first goal of `Mio` is to provide powerful API statistics and summary for NG
 
 Metrics is just base, the final goal is automatic improve the user's NGINX system with the power of data.
 
+## todo list
++ use shared dict incr() method
+
 ## API Compatibility
 The `/status` and `/summary` APIs are 100%  compatible with NGINX Plus.
 
