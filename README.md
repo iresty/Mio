@@ -7,6 +7,7 @@ Metrics is just base, the final goal is automatic improve the user's NGINX syste
 
 ## todo list
 + use shared dict incr() method
++ add beautiful UI
 
 ## API Compatibility
 The `/status` and `/summary` APIs are 100%  compatible with NGINX Plus.
@@ -291,5 +292,7 @@ day:{
 }
 ~~~
 当天的 summary 获取：curl http://127.0.0.1/summary
+
 昨天和前天的历史 summary 获取：curl http://127.0.0.1/summary_history
+
 最近一分钟的 summary 获取：curl http://127.0.0.1/summary_one_minute
