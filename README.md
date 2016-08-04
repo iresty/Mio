@@ -1,44 +1,52 @@
 # Mio
+
 `change NGINX world from metrics to insight`
 
 The first goal of `Mio` is to provide powerful API statistics and summary for NGINX.
 
 Metrics is just base, the final goal is automatic improve the user's NGINX system with the power of data.
 
-## todo list
-+ use shared dict incr() method
-+ add beautiful UI
+## TODO list
+
+- [ ] use shared dict incr() method  
+- [ ] add beautiful UI
 
 ## API Compatibility
+
 The `/status` and `/summary` APIs are 100%  compatible with NGINX Plus.
 
 ### /status
+
+```
 curl http://127.0.0.1/status
+```
 
-NGINX Plus 的统计模块数据格式和说明文档在[这里](http://nginx.org/en/docs/http/ngx_http_status_module.html)
+NGINX Plus 的统计模块数据格式和说明文档在[这里](http://nginx.org/en/docs/http/ngx_http_status_module.html)。NGINX Plus 的json 大块数据为：
 
-NGINX Plus 的json 大块数据为：
+```
 {
-"version":6,
-"nginx_version":"1.9.13",
-"address":"206.251.255.64",
-"generation":21,
-"load_timestamp":1462615200247,
-"timestamp":1462870443024,
-"pid":24978,
-"processes":{},
-"connections":{},
-"ssl":{},
-"requests":{},
-"server_zones":{},
-"upstreams":{},
-"caches":{},
-"stream":{}
+    "version": 6,
+    "nginx_version": "1.9.13",
+    "address": "206.251.255.64",
+    "generation": 21,
+    "load_timestamp": 1462615200247,
+    "timestamp": 1462870443024,
+    "pid": 24978,
+    "processes": {},
+    "connections": {},
+    "ssl": {},
+    "requests": {},
+    "server_zones": {},
+    "upstreams": {},
+    "caches": {},
+    "stream": {}
 }
+```
 
 **注意下面数据的缩进，缩进代表json数据的组织**。
 
 比如
+
 > - server_zones
     - hg.nginx.org
         - processing
@@ -47,25 +55,24 @@ NGINX Plus 的json 大块数据为：
             - 1xx
 
 代表的json格式为：
-> "server_zones":{
+
+```
+"server_zones":{
     "processing":0,
     "requests":71639,
     "responses":{
-    "1xx":0,
-    "2xx":66973,
-    "3xx":3289,
-    "4xx":941,
-    "5xx":264,
-    "total":71467
+    	"1xx":0,
+    	"2xx":66973,
+    	"3xx":3289,
+    	"4xx":941,
+    	"5xx":264,
+    	"total":71467
     },
     "discarded":172,
     "received":21575699,
     "sent":2652969417
-    },
-    "lxr.nginx.org":{}
 },
-
-
+```
 
 - version
 
@@ -174,12 +181,10 @@ NGINX Plus 的json 大块数据为：
         每秒发送的数据大小，单位是 kb。两次sent的差值除以秒数
 
     - responses
-      - total
-
-            (The total number of responses sent to clients.)
-      - 1xx, 2xx, 3xx, 4xx, 5xx
-
-            (The number of responses with status codes 1xx, 2xx, 3xx, 4xx, and 5xx.)
+      - total  
+        The total number of responses sent to clients.
+      - 1xx, 2xx, 3xx, 4xx, 5xx  
+        The number of responses with status codes 1xx, 2xx, 3xx, 4xx, and 5xx.
 
 - upstreams
     - upstream_name(这个是 **用户自定义** 的字符串，不是关键字)
@@ -274,9 +279,9 @@ NGINX Plus 的json 大块数据为：
 ### /summary
 出于性能考虑，summary 的统计数据会先放在 lru cache 中，由 timer 定时同步到 shared dict 中。
 summary 接口的返回值格式为 json，示例：
-~~~
+
+```
 day:{
-{
     "/hello":{
         "total":123, -- 接口访问总数
         "avg_time":0.008, -- 平均返回时间
@@ -286,13 +291,11 @@ day:{
         "3xx":0,
         "4xx":222,
         "5xx":112
-        },
+    },
     "/status":{}
 }
-}
-~~~
-当天的 summary 获取：curl http://127.0.0.1/summary
+```
 
-昨天和前天的历史 summary 获取：curl http://127.0.0.1/summary_history
-
-最近一分钟的 summary 获取：curl http://127.0.0.1/summary_one_minute
+- 当天的 summary 获取：curl http://127.0.0.1/summary
+- 昨天和前天的历史 summary 获取：curl http://127.0.0.1/summary_history
+- 最近一分钟的 summary 获取：curl http://127.0.0.1/summary_one_minute
