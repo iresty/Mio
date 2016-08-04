@@ -1,4 +1,5 @@
 # Mio
+
 `change NGINX world from metrics to insight`
 
 The first goal of `Mio` is to provide powerful API statistics and summary for NGINX.
@@ -7,10 +8,11 @@ Metrics is just base, the final goal is automatic improve the user's NGINX syste
 
 ## TODO list
 
-[] use shared dict incr() method  
-[] add beautiful UI
+- [ ] use shared dict incr() method  
+- [ ] add beautiful UI
 
 ## API Compatibility
+
 The `/status` and `/summary` APIs are 100%  compatible with NGINX Plus.
 
 ### /status
@@ -69,8 +71,6 @@ NGINX Plus 的统计模块数据格式和说明文档在[这里](http://nginx.or
     "discarded":172,
     "received":21575699,
     "sent":2652969417
-    },
-    "lxr.nginx.org":{}
 },
 ```
 
@@ -291,7 +291,7 @@ day:{
         "3xx":0,
         "4xx":222,
         "5xx":112
-        },
+    },
     "/status":{}
 }
 ```
