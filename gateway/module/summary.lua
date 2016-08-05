@@ -1,5 +1,5 @@
 local common = require "gateway.module.common"
-local uri_lrucache = require "resty.summary_lru" -- 用作持久的统计使用
+local uri_lrucache = require "gateway.module.summary_lru" -- 用作持久的统计使用
 
 local _M = {}
 

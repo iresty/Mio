@@ -1,6 +1,4 @@
-local dkjson = require "resty.dkjson"
 local cjson  = require "cjson"
-
 
 local _M = {}
 
@@ -82,11 +80,6 @@ function _M.load_file_to_string(path)
     return t
 end
 
-function _M.load_file_to_json(path)
-    -- body
-    return dkjson.decode(_M.load_file_to_string(path))
-end
-
 function _M.save_string_to_file(path, str)
     -- body
     local fd, err = io.open(path, 'w')
@@ -100,12 +93,6 @@ function _M.save_string_to_file(path, str)
     end
 
     return true, nil
-end
-
--- 没有对encode后的结果做检查
-function _M.save_table_to_file(path, tab)
-    -- body
-    return _M.save_string_to_file(path, dkjson.encode(tab))
 end
 
 function _M.store_in_shared_cache(cache, key, value, expire)
