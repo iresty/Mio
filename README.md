@@ -7,7 +7,7 @@ The first goal of `Mio` is to provide powerful API statistics and summary for NG
 Metrics is just base, the final goal is automatic improve the user's NGINX system with the power of data.
 
 ## Installation & run
-1.[install](https://openresty.org/en/installation.html) The latest OpenResty version.
+1. [install](https://openresty.org/en/installation.html) The latest OpenResty version.
 OpenResty provides [official pre-built packages](https://openresty.org/en/linux-packages.html) for some of the common Linux distributions. Ensure you have checked them out first.
 
 2. download Mio to your application directories, then run like this:
