@@ -6,6 +6,40 @@ The first goal of `Mio` is to provide powerful API statistics and summary for NG
 
 Metrics is just base, the final goal is automatic improve the user's NGINX system with the power of data.
 
+## Installation & run
+1. [install](https://openresty.org/en/installation.html) The latest OpenResty version.
+OpenResty provides [official pre-built packages](https://openresty.org/en/linux-packages.html) for some of the common Linux distributions. Ensure you have checked them out first.
+
+2. download Mio to your application directories, then run like this:
+```
+sudo openresty -p /opt/my-fancy-app/
+```
+
+If you build OpenResty from source code, maybe you can not find `openresty`,which is symbolic link to OpenResty's nginx executable file, /usr/local/openresty/nginx/sbin/nginx. So you can run like this:
+```
+sudo /usr/local/openresty/nginx/sbin/nginx -p /opt/my-fancy-app/
+```
+
+3.you can test Mio like this:
+```
+curl -i http://127.0.0.1/hello
+```
+> HTTP/1.1 404 Not Found
+
+```
+curl -i http://127.0.0.1/summary
+```
+> {"\/hello":{"total":1,"4xx":1,"sent":314,"request_time":0}}
+
+```
+curl -i http://127.0.0.1/status
+```
+> {"load_timestamp":1470384389,"requests":{"current":0,"total":2,"success":1},"worker_count":2,"address":"127.0.0.1:80","ngx_lua_version":"0.10.5","server_zones":[],"nginx_version":"1.9.15","connections":{"active":1,"writing":1,"current":1,"idle":0,"reading":0},"timestamp":1470384409,"generation":0,"upstreams":[]}
+
+Congratulations,`Mio` is running!
+
+If you run failed, please create a new issue, I will fix it ASAP.
+
 ## TODO list
 
 - [ ] use shared dict incr() method  
