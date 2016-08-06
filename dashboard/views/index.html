@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mio Dashboard</title>
+    {(meta.html)}
+</head>
+<body>
+
+<div class="wrapper" id="wrapper">
+    <div class="container">
+        <div class="b-section-data" style="display:block">
+            <div class="row">
+                <div class="col col-1">
+                    <div class="col-data col-data__200">
+                        <table class="dashboard-table">
+                            <tbody>
+                                <tr>
+                                    <td>Version</td>
+                                    <td><strong>1.9.13</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td><strong>206.251.255.64</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PID</td>
+                                    <td><strong>12121</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Uptime</td>
+                                    <td><span id="t-uptime" data-id="25"><strong>5d 21h 38m</strong></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col col-3">
+                    <div class="col-data col-data__200">
+                        <div class="col-subtitle">
+                            <div class="col-subtitle-toggle noselect"><span class="active">Connections</span>
+                            </div>
+                            <div class="col-subtitle-toggle"><span class="">SSL</span>
+                            </div> <span class="col-subtitle__gray pull-right">Accepted: 43000861</span>
+                        </div>
+                        <table class="dashboard-horizontal-table full-width">
+                            <colgroup>
+                                <col width="20%">
+                                    <col width="20%">
+                                        <col width="20%">
+                                            <col width="20%">
+                                                <col width="20%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Current</th>
+                                    <th>Accepted/s</th>
+                                    <th>Active</th>
+                                    <th>Idle</th>
+                                    <th class="">Dropped</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>42</td>
+                                    <td>6</td>
+                                    <td>10</td>
+                                    <td>32</td>
+                                    <td class="">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col col-1">
+                    <div class="col-data col-data__200">
+                        <div class="col-subtitle"><strong>Requests</strong>  <span class="col-subtitle__gray">Total: 89094646</span>
+                        </div>
+                        <table class="dashboard-horizontal-table full-width">
+                            <colgroup>
+                                <col width="50%">
+                                    <col width="50%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Current</th>
+                                    <th>Req/s</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10</td>
+                                    <td>13</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-1">
+                    <div class="col-data col-data__300">
+                        <div class="col-header">Server zones <span class="summary_success col-header__status"></span>
+                        </div>
+                        <table class="dashboard-horizontal-table">
+                            <thead>
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>Problems</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>3</td>
+                                    <td>/</td>
+                                    <td><span class="cell-color ">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-counters">
+                            <div><strong>Traffic</strong>
+                            </div>
+                            <div>In: 1.18 KiB/s</div>
+                            <div>Out: 429 KiB/s</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-1">
+                    <div class="col-data col-data__300">
+                        <div class="col-header">Upstreams <span class="summary_danger col-header__status"></span>
+                        </div>
+                        <table class="dashboard-horizontal-table">
+                            <thead>
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>Alerts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>4</td>
+                                    <td>/</td>
+                                    <td><span class="cell-color cell-red">2</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-counters">
+                            <div><strong>Servers</strong>
+                            </div>
+                            <div>All: 7 / Up: 5</div>
+                            <div class="red-text">Failed: 2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-1">
+                    <div class="col-data col-data__300">
+                        <div class="col-header">TCP/UDP Zones <span class="summary_success col-header__status"></span>
+                        </div>
+                        <div class="tcp-counters">
+                            <div>Conn total: 799630</div>
+                            <div>Conn current: 0</div>
+                            <div>Conn/s: 1</div>
+                        </div>
+                        <div class="col-counters">
+                            <div><strong>Traffic</strong>
+                            </div>
+                            <div>In: 115 B/s</div>
+                            <div>Out: 7.35 KiB/s</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-1">
+                    <div class="col-data col-data__300">
+                        <div class="col-header">TCP/UDP Upstreams <span class="summary_success col-header__status"></span>
+                        </div>
+                        <table class="dashboard-horizontal-table">
+                            <thead>
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>Problems</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>3</td>
+                                    <td>/</td>
+                                    <td><span class="cell-color ">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-counters">
+                            <div><strong>Servers</strong>
+                            </div>
+                            <div>All: 10 / Up: 5</div>
+                            <div class="">Failed: 0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-1">
+                    <div class="col-data col-data__300">
+                        <div class="col-header">Caches <span class="summary_warning col-header__status"></span>
+                        </div>
+                        <table class="dashboard-horizontal-table">
+                            <thead>
+                                <tr>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>Warnings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>/</td>
+                                    <td><span class="cell-color cell-yellow">1</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-counters">
+                            <div><strong>Caches states</strong>
+                            </div>
+                            <div>Warm: 1</div>
+                            <div>Cold: 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script type="text/javascript">
+    $(document).ready(function(){
+        $.ajax({
+            url : '/status',
+            type : 'get',
+            cache: false,
+            data : {},
+            dataType : 'json',
+            success : function(result) {
+                if(result.success){
+                    
+                }
+            },
+            error : function() {}
+        });
+    });
+</script> -->
+</body>
+</html>
