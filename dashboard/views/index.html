@@ -7,6 +7,11 @@
 <body>
 
 <div class="wrapper" id="wrapper">
+    
+</div>
+
+
+<script id="status-tpl" type="text/template">
     <div class="container">
         <div class="b-section-data" style="display:block">
             <div class="row">
@@ -16,22 +21,22 @@
                             <tbody>
                                 <tr>
                                     <td>Version</td>
-                                    <td><strong>1.9.13</strong>
+                                    <td><strong>${status.nginx_version}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
-                                    <td><strong>206.251.255.64</strong>
+                                    <td><strong>${status.address}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>PID</td>
-                                    <td><strong>12121</strong>
+                                    <td><strong></strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Uptime</td>
-                                    <td><span id="t-uptime" data-id="25"><strong>5d 21h 38m</strong></span>
+                                    <td><span id="t-uptime" data-id="25"><strong>${status.load_timestamp}</strong></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -43,17 +48,10 @@
                         <div class="col-subtitle">
                             <div class="col-subtitle-toggle noselect"><span class="active">Connections</span>
                             </div>
-                            <div class="col-subtitle-toggle"><span class="">SSL</span>
-                            </div> <span class="col-subtitle__gray pull-right">Accepted: 43000861</span>
+                            <div class="col-subtitle-toggle"><span class=""></span>
+                            </div> <span class="col-subtitle__gray pull-right">Accepted: </span>
                         </div>
                         <table class="dashboard-horizontal-table full-width">
-                            <colgroup>
-                                <col width="20%">
-                                    <col width="20%">
-                                        <col width="20%">
-                                            <col width="20%">
-                                                <col width="20%">
-                            </colgroup>
                             <thead>
                                 <tr>
                                     <th>Current</th>
@@ -65,11 +63,11 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>42</td>
-                                    <td>6</td>
-                                    <td>10</td>
-                                    <td>32</td>
-                                    <td class="">0</td>
+                                    <td>${status.connections.current}</td>
+                                    <td>--</td>
+                                    <td>${status.connections.active}</td>
+                                    <td>${status.connections.idle}</td>
+                                    <td class="">--</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -77,7 +75,7 @@
                 </div>
                 <div class="col col-1">
                     <div class="col-data col-data__200">
-                        <div class="col-subtitle"><strong>Requests</strong>  <span class="col-subtitle__gray">Total: 89094646</span>
+                        <div class="col-subtitle"><strong>Requests</strong>  <span class="col-subtitle__gray">Total: ${status.requests.total}</span>
                         </div>
                         <table class="dashboard-horizontal-table full-width">
                             <colgroup>
@@ -92,8 +90,8 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>10</td>
-                                    <td>13</td>
+                                    <td>${status.requests.current}</td>
+                                    <td>--</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -115,9 +113,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>3</td>
+                                    <td>--</td>
                                     <td>/</td>
-                                    <td><span class="cell-color ">0</span>
+                                    <td><span class="cell-color ">--</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -125,8 +123,8 @@
                         <div class="col-counters">
                             <div><strong>Traffic</strong>
                             </div>
-                            <div>In: 1.18 KiB/s</div>
-                            <div>Out: 429 KiB/s</div>
+                            <div>In: -- KiB/s</div>
+                            <div>Out: -- KiB/s</div>
                         </div>
                     </div>
                 </div>
@@ -144,9 +142,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>4</td>
+                                    <td>--</td>
                                     <td>/</td>
-                                    <td><span class="cell-color cell-red">2</span>
+                                    <td><span class="cell-color cell-red">--</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -154,8 +152,8 @@
                         <div class="col-counters">
                             <div><strong>Servers</strong>
                             </div>
-                            <div>All: 7 / Up: 5</div>
-                            <div class="red-text">Failed: 2</div>
+                            <div>All: -- / Up: --</div>
+                            <div class="red-text">Failed: --</div>
                         </div>
                     </div>
                 </div>
@@ -164,15 +162,15 @@
                         <div class="col-header">TCP/UDP Zones <span class="summary_success col-header__status"></span>
                         </div>
                         <div class="tcp-counters">
-                            <div>Conn total: 799630</div>
-                            <div>Conn current: 0</div>
-                            <div>Conn/s: 1</div>
+                            <div>Conn total: --</div>
+                            <div>Conn current: --</div>
+                            <div>Conn/s: --</div>
                         </div>
                         <div class="col-counters">
                             <div><strong>Traffic</strong>
                             </div>
-                            <div>In: 115 B/s</div>
-                            <div>Out: 7.35 KiB/s</div>
+                            <div>In: -- B/s</div>
+                            <div>Out: -- KiB/s</div>
                         </div>
                     </div>
                 </div>
@@ -190,9 +188,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>3</td>
+                                    <td>--</td>
                                     <td>/</td>
-                                    <td><span class="cell-color ">0</span>
+                                    <td><span class="cell-color ">--</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -200,8 +198,8 @@
                         <div class="col-counters">
                             <div><strong>Servers</strong>
                             </div>
-                            <div>All: 10 / Up: 5</div>
-                            <div class="">Failed: 0</div>
+                            <div>All: -- / Up: --</div>
+                            <div class="">Failed: --</div>
                         </div>
                     </div>
                 </div>
@@ -219,9 +217,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
+                                    <td>--</td>
                                     <td>/</td>
-                                    <td><span class="cell-color cell-yellow">1</span>
+                                    <td><span class="cell-color cell-yellow">--</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -229,32 +227,39 @@
                         <div class="col-counters">
                             <div><strong>Caches states</strong>
                             </div>
-                            <div>Warm: 1</div>
-                            <div>Cold: 0</div>
+                            <div>Warm: --</div>
+                            <div>Cold: --</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- <script type="text/javascript">
+</script>
+
+ <script type="text/javascript">
     $(document).ready(function(){
-        $.ajax({
-            url : '/status',
-            type : 'get',
-            cache: false,
-            data : {},
-            dataType : 'json',
-            success : function(result) {
-                if(result.success){
-                    
-                }
-            },
-            error : function() {}
-        });
+        setInterval(function(){
+            $.ajax({
+                url : '/status',
+                type : 'get',
+                cache: false,
+                data : {},
+                dataType : 'json',
+                success : function(result) {
+                    if(result.success){
+                        var tpl = $("#status-tpl").html();
+                        var html = juicer(tpl, {
+                            status: result.data
+                        });
+                        $("#wrapper").html(html);
+                    }
+                },
+                error : function() {}
+            });
+        }, 1000);
     });
-</script> -->
+</script>
 </body>
 </html>
