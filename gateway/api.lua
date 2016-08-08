@@ -1,6 +1,7 @@
 local status = require("gateway.module.status")
 local summary = require("gateway.module.summary")
 
+local API = {}
 
 API["/status"] = {
     GET = function()
