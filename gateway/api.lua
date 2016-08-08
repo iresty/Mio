@@ -1,10 +1,3 @@
-local API = {}
-local table_insert = table.insert
-local ipairs = ipairs
-local type = type
-local tostring = tostring
-local cjson = require("cjson")
-
 local status = require("gateway.module.status")
 local summary = require("gateway.module.summary")
 
