@@ -10,7 +10,29 @@
         },
 
         initEvents: function () {
-           
+           _this.startStatusMonit();
         },
+
+        startStatusMonit: function() {
+            setInterval(function(){
+                $.ajax({
+                    url : '/status',
+                    type : 'get',
+                    cache: false,
+                    data : {},
+                    dataType : 'json',
+                    success : function(result) {
+                        if(result.success){
+                            var tpl = $("#status-tpl").html();
+                            var html = juicer(tpl, {
+                                status: result.data
+                            });
+                            $("#wrapper").html(html);
+                        }
+                    },
+                    error : function() {}
+                });
+            }, 1000);
+        }
     };
 }(APP));
