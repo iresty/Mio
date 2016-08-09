@@ -22,15 +22,17 @@
                     data : {},
                     dataType : 'json',
                     success : function(result) {
-                        if(result.success){
+                        if(result){
                             var tpl = $("#status-tpl").html();
                             var html = juicer(tpl, {
-                                status: result.data
+                                status: result
                             });
                             $("#wrapper").html(html);
                         }
                     },
-                    error : function() {}
+                    error : function() {
+                        $("#wrapper").html("something went wrong...");
+                    }
                 });
             }, 1000);
         }

@@ -8,16 +8,9 @@ API["/status"] = {
         return function(req, res, next)
             local resport = status.report()
             if resport then
-                res:json({
-                    success = true,
-                    msg = "",
-                    data = resport
-                }, true)
+                res:json(resport, true)
             else
-                res:json({
-                    success = false,
-                    msg = "error to get `status`"
-                })
+                res:status(500)
             end
         end
     end
@@ -29,16 +22,9 @@ API["/summary"] = {
         return function(req, res, next)
             local resport = summary.report()
             if resport then
-                res:json({
-                    success = true,
-                    msg = "", 
-                    data = resport
-                }, true)
+                res:json(resport, true)
             else
-                res:json({
-                    success = false,
-                    msg = "error to get `status`"
-                })
+                res:status(500)
             end
         end
     end
@@ -50,16 +36,9 @@ API["/summary_history"] = {
         return function(req, res, next)
             local resport = summary.history_report()
             if resport then
-                res:json({
-                    success = true,
-                    msg = "", 
-                    data = resport
-                }, true)
+                res:json(resport, true)
             else
-                res:json({
-                    success = false,
-                    msg = "error to get `status`"
-                })
+                res:status(500)
             end
         end
     end
@@ -70,16 +49,9 @@ API["/summary_one_minute"] = {
         return function(req, res, next)
             local resport = summary.last_one_minute_report()
             if resport then
-                res:json({
-                    success = true,
-                    msg = "", 
-                    data = resport
-                }, true)
+                res:json(resport, true)
             else
-                res:json({
-                    success = false,
-                    msg = "error to get `status`"
-                })
+                res:status(500)
             end
         end
     end
