@@ -1,7 +1,7 @@
-local ipairs = ipairs
 local pairs = pairs
 local require = require
-local table_insert = table.insert
+local pcall = pcall
+local type = type
 local string_lower = string.lower
 local lor = require("lor.index")
 local api_router = lor:Router()
@@ -10,26 +10,18 @@ local api_router = lor:Router()
 local default_api_path = "gateway.api"
 local ok, api = pcall(require, default_api_path)
 
-if not ok then
-    ngx.log(ngx.ERR, "[api load error], api_path:", default_api_path, ok)
-else
-    if api and type(api) == "table" then
-        for uri, api_methods in pairs(api) do
-            ngx.log(ngx.INFO, "load route, uri:", uri)
-            if type(api_methods) == "table" then
-                for method, func in pairs(api_methods) do
-                    local m = string_lower(method)
+if not ok or not api or type(api) ~= "table" then
+    ngx.log(ngx.ERR, "[API exposed error], api_path:", default_api_path)
+    return api_router
+end
 
-                    if m == "get" then
-                         api_router:get(uri, func(store))
-                    elseif m == "post" then
-                        api_router:post(uri, func(store))
-                    elseif m == "put" then
-                        api_router:put(uri, func(store))
-                    elseif m == "delete" then
-                        api_router:delete(uri, func(store))
-                    end
-                end
+for uri, api_methods in pairs(api) do
+    ngx.log(ngx.INFO, "load route, uri:", uri)
+    if type(api_methods) == "table" then
+        for method, func in pairs(api_methods) do
+            local m = string_lower(method)
+            if m == "get" or m == "post" or m == "put" or m == "delete" then
+                api_router[m](api_router, uri, func())
             end
         end
     end

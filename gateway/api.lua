@@ -3,6 +3,7 @@ local summary = require("gateway.module.summary")
 
 local API = {}
 
+
 API["/status"] = {
     GET = function()
         return function(req, res, next)
@@ -16,7 +17,6 @@ API["/status"] = {
     end
 }
 
-
 API["/summary"] = {
     GET = function()
         return function(req, res, next)
@@ -29,7 +29,6 @@ API["/summary"] = {
         end
     end
 }
-
 
 API["/summary_history"] = {
     GET = function()
