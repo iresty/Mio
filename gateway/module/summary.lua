@@ -1,5 +1,17 @@
+local type = type
+local pairs = pairs
 local common = require "gateway.module.common"
 local uri_lrucache = require "gateway.module.summary_lru" -- 用作持久的统计使用
+
+local function table_is_array(t)
+    if type(t) ~= "table" then return false end
+    local i = 0
+    for _ in pairs(t) do
+        i = i + 1
+        if t[i] == nil then return false end
+    end
+    return true
+end
 
 local _M = {}
 
@@ -71,8 +83,12 @@ function _M.last_one_minute_report()
         report = common.merge_table(report,
                         common.json_decode(shared_recording_summary:get(seconds - i)) or {})
     end
-    report = common.json_encode(report)
-    ngx.say(report)
+    
+    if not report or table_is_array(report) then 
+        return {}
+    else
+        return report
+    end
 end
 
 function _M.history_report()
@@ -86,19 +102,27 @@ function _M.history_report()
             report = common.merge_table(report,
                             common.json_decode(shared_summary:get(today - i)) or {})
         end
-        report = common.json_encode(report)
-        history_summary:set('history', report, 3600)
+        history_summary:set('history', common.json_encode(report), 3600)
     end
-    ngx.say(report or common.json_encode({}))
+
+    -- 无数据时可能会等于[]
+    if not report or table_is_array(report) then 
+        return {}
+    else
+        return report
+    end
 end
 
 -- 只返回当天的 summary
 function _M.report()
     -- today 的含义是第几天
     local today = math.floor(ngx.time() / 86400) -- 3600 * 24 = 86400
-    local report = shared_summary:get(today) or common.json_encode({})
+    local report = shared_summary:get(today) 
+    if report == "[]" then 
+        report = "{}" 
+    end
 
-    ngx.say(report)
+    return common.json_decode(report)
 end
 
 

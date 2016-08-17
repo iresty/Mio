@@ -364,7 +364,7 @@ function _M.report()
     report.upstreams    = get_upstreams_info()
     report.server_zones = get_server_zones()
 
-    ngx.say(common.json_encode(report))
+    return report
 end
 
 return _M
