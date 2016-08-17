@@ -1,3 +1,2 @@
-logs/error.log
-logs/access.log
+logs/*.log
 logs/nginx.pid
