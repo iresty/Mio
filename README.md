@@ -14,6 +14,8 @@ Metrics is just base, the final goal is automatic improve the user's NGINX syste
 
 Please remember add --with-http_stub_status_module configuration parameter when run `./configure`.
 
+By default, OpenResty is installed into the prefix `/usr/local/openresty/`.
+
 2. download Mio to your application directories, then run like this:
 ```
 sudo openresty -p /opt/my-fancy-app/
@@ -24,23 +26,31 @@ If you build OpenResty from source code, maybe you can not find `openresty`,whic
 sudo /usr/local/openresty/nginx/sbin/nginx -p /opt/my-fancy-app/
 ```
 
-3.you can test Mio like this:
-```
-curl -i http://127.0.0.1/hello
-```
-> HTTP/1.1 404 Not Found
+3. you can test Mio like this:
 
++ The port `80` is designed for your own API.
 ```
-curl -i http://127.0.0.1/summary
+curl -i http://127.0.0.1/
+```
+> hello! this is Mio.
+
++ The port `9090` is designed for Mio's statistics and summary API.
+```
+curl -i http://127.0.0.1:9090/summary
 ```
 > {"\/hello":{"total":1,"4xx":1,"sent":314,"request_time":0}}
 
 ```
-curl -i http://127.0.0.1/status
+curl -i http://127.0.0.1:9090/status
 ```
 > {"load_timestamp":1470384389,"requests":{"current":0,"total":2,"success":1},"worker_count":2,"address":"127.0.0.1:80","ngx_lua_version":"0.10.5","server_zones":[],"nginx_version":"1.9.15","connections":{"active":1,"writing":1,"current":1,"idle":0,"reading":0},"timestamp":1470384409,"generation":0,"upstreams":[]}
 
-Congratulations,`Mio` is running!
++ The port `8080` is designed for Mio's dashboard.
+
+Open your browser with `http://127.0.0.1:8080`, you will you'll see a monitor page similar to NGINX plus. And this monitor page is preview version, we are working for it.
+
+
+Congratulations,`Mio` is running! 
 
 If you run failed, please create a new issue, I will fix it ASAP.
 
