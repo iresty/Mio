@@ -6,7 +6,8 @@ The first goal of `Mio` is to provide powerful API statistics and summary for NG
 
 Metrics is just base, the final goal is automatic improve the user's NGINX system with the power of data.
 
-## Screenshot
+## Dashborad screenshot
+![dashborad](/docs/screenshot.png)
 
 ## Installation & run
 1. [install](https://openresty.org/en/installation.html) The **latest** OpenResty version.
