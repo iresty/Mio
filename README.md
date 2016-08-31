@@ -13,7 +13,9 @@ Metrics is just base, the final goal is automatic improve the user's NGINX syste
 
 [install](https://openresty.org/en/installation.html) The **latest** OpenResty version.
 
-Please remember add --with-http_stub_status_module configuration parameter when run `./configure`.
+If  your OpenResty version above 1.11.2.1, pelase use `develop` branch instead of `master` branch. Because OpenResty added the optional "init" argument for `shdict:incr()` in 1.11.2.1, which can reduce a lot of `if` conditions and improve performance.
+
+Please remember add `--with-http_stub_status_module` configuration parameter when run `./configure`.
 
 By default, OpenResty is installed into the prefix `/usr/local/openresty/`.
 
