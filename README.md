@@ -13,7 +13,7 @@ Metrics is just base, the final goal is automatic improve the user's NGINX syste
 
 [install](https://openresty.org/en/installation.html) The **latest** OpenResty version.
 
-Please remember add --with-http_stub_status_module configuration parameter when run `./configure`.
+Please remember add `--with-http_stub_status_module` configuration parameter when run `./configure`.
 
 By default, OpenResty is installed into the prefix `/usr/local/openresty/`.
 
