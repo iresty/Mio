@@ -5,12 +5,9 @@ local upstream = require "ngx.upstream"
 
 local _M = {}
 
-local STATUS_INIT = "status_init"
-
 local TOTAL_COUNT = "total_count"
 local TOTAL_COUNT_SUCCESS = "total_success_count"
 local CURRENT_QPS = "current_qps"
-local TIMEOUT_QPS = 60*10
 
 local TRAFFIC_READ = "traffic_read"
 local TRAFFIC_WRITE = "traffic_write"
@@ -21,7 +18,6 @@ local NGX_RELOAD_GENERATION = 'ngx_reload_generation'
 local TIME_TOTAL = "time_total"
 
 local SERVER_ZONES = "server_zones"
-local PROCESSING = 'processing'
 local RECEIVED = 'received'
 local DISCARDED = 'discarded'
 local SENT = 'sent'
@@ -31,33 +27,15 @@ local RESPONSE_CODE = "response_code"
 local UPSTREAM_TIME_SUM = 'upstream_time_sum'
 local UPSTREAM_REQUEST_COUNT = 'upstream_request_count'
 
-local UPSTREAM_CNT = "upstream_cnt"
 local UPSTREAM_REQUEST_LEN = "upstream_request_len"
 local UPSTREAM_REP_LEN = "upstream_rep_len"
-local UPSTREAM_REP_TIME= "upstream_rep_time"
 
 local shared_status = ngx.shared.status
 
 -- maybe optimized, read from redis
 function _M.init()
-    local newval, err = shared_status:incr(NGX_RELOAD_GENERATION, 1)
-    if not newval and err == "not found" then
-         shared_status:add(NGX_RELOAD_GENERATION, 0)
-    end
-
-    shared_status:set( NGX_LOAD_TIMESTAMP, ngx.time()) -- set nginx reload/restart begin uptime
-
-    local ok, err = shared_status:add( STATUS_INIT, true )
-    if ok then --if nginx from stop to start
-    	shared_status:set( TOTAL_COUNT, 0 )
-    	shared_status:set( TOTAL_COUNT_SUCCESS, 0 )
-
-        shared_status:set( TRAFFIC_READ, 0 )
-		shared_status:set( TRAFFIC_WRITE, 0 )
-
-        shared_status:set( TIME_TOTAL, 0 )
-    end
-
+    shared_status:incr(NGX_RELOAD_GENERATION, 1, 0)
+    shared_status:set(NGX_LOAD_TIMESTAMP, ngx.time()) -- set nginx reload/restart begin uptime
 end
 
 local function hook_for_upstream()
@@ -69,41 +47,23 @@ local function hook_for_upstream()
 
         if ngx.var.upstream_status then -- upstreams 可能挂了，返回的 code 是 nil
             local status = math.floor(tonumber(ngx.var.upstream_status) / 100) .. 'xx'
-            local newval, err = shared_status:incr(upstream_key .. RESPONSE_CODE .. status, 1)
-            if not newval and err == "not found" then
-                shared_status:set(upstream_key .. RESPONSE_CODE .. status, 1)
-            end
+            shared_status:incr(upstream_key .. RESPONSE_CODE .. status, 1, 0)
         end
 
         --UPSTREAM_REQUEST_LEN
-        local newval, err = shared_status:incr(upstream_key .. UPSTREAM_REQUEST_LEN, tonumber(ngx.var.request_length))
-        if not newval and err == "not found" then
-            shared_status:set(upstream_key .. UPSTREAM_REQUEST_LEN, tonumber(ngx.var.request_length))
-        end
+        shared_status:incr(upstream_key .. UPSTREAM_REQUEST_LEN, tonumber(ngx.var.request_length), 0)
 
         -- send_per_second
-        local newval, err = shared_status:incr(upstream_key .. UPSTREAM_REQUEST_LEN .. cur_seconds, tonumber(ngx.var.request_length))
-        if not newval and err == "not found" then
-            shared_status:set(upstream_key .. UPSTREAM_REQUEST_LEN .. cur_seconds, tonumber(ngx.var.request_length), TIMEOUT_QPS)
-        end
+        shared_status:incr(upstream_key .. UPSTREAM_REQUEST_LEN .. cur_seconds, tonumber(ngx.var.request_length), 0)
 
         -- UPSTREAM_REP_LEN
-        local newval, err = shared_status:incr(upstream_key .. UPSTREAM_REP_LEN, tonumber(ngx.var.upstream_response_length))
-        if not newval and err == "not found" then
-            shared_status:set(upstream_key .. UPSTREAM_REP_LEN, tonumber(ngx.var.upstream_response_length))
-        end
+        shared_status:incr(upstream_key .. UPSTREAM_REP_LEN, tonumber(ngx.var.upstream_response_length), 0)
 
         -- receive_per_second
-        local newval, err = shared_status:incr(upstream_key .. UPSTREAM_REP_LEN .. cur_seconds, tonumber(ngx.var.upstream_response_length))
-        if not newval and err == "not found" then
-            shared_status:set(upstream_key .. UPSTREAM_REP_LEN .. cur_seconds, tonumber(ngx.var.upstream_response_length), TIMEOUT_QPS)
-        end
+        shared_status:incr(upstream_key .. UPSTREAM_REP_LEN .. cur_seconds, tonumber(ngx.var.upstream_response_length), 0)
 
         -- qps
-        local newval, err = shared_status:incr(upstream_key .. CURRENT_QPS .. cur_seconds, 1)
-        if not newval and err == "not found" then
-            shared_status:set(upstream_key .. CURRENT_QPS .. cur_seconds, 1, TIMEOUT_QPS)
-        end
+        shared_status:incr(upstream_key .. CURRENT_QPS .. cur_seconds, 1, 0)
 
         -- UPSTREAM_TIME_SUM
         local upstream_time = tonumber(ngx.var.upstream_response_time)
@@ -111,10 +71,7 @@ local function hook_for_upstream()
         shared_status:set(upstream_key .. UPSTREAM_TIME_SUM, sum + upstream_time)
 
         -- UPSTREAM_REQUEST_COUNT
-        local newval, err = shared_status:incr(upstream_key .. UPSTREAM_REQUEST_COUNT, 1)
-        if not newval and err == "not found" then
-            shared_status:set(upstream_key .. UPSTREAM_REQUEST_COUNT, 1)
-        end
+        shared_status:incr(upstream_key .. UPSTREAM_REQUEST_COUNT, 1, 0)
     end
 end
 
@@ -128,10 +85,7 @@ local function hook_for_server()
     local cur_seconds= ngx.time()
 
     -- request qps
-    local newval, err = shared_status:incr(server_key .. CURRENT_QPS .. cur_seconds, 1)
-    if not newval and err == "not found" then
-        shared_status:set(server_key .. CURRENT_QPS .. cur_seconds, 1, TIMEOUT_QPS)
-    end
+    shared_status:incr(server_key .. CURRENT_QPS .. cur_seconds, 1, 0)
 
     -- requests total
     local newval, err = shared_status:incr(server_key, 1)
@@ -151,21 +105,13 @@ local function hook_for_server()
     -- response code stat
     if ngx.var.status then -- 请求可能被丢弃，返回的 code 是 nil
         -- stat all response
-        local newval, err = shared_status:incr(server_key .. RESPONSE, 1)
-        if not newval and err == "not found" then
-            shared_status:set(server_key .. RESPONSE, 1)
-        end
+        shared_status:incr(server_key .. RESPONSE, 1, 0)
+
         -- stat response code
         local status = math.floor(tonumber(ngx.var.status) / 100) .. 'xx'
-        local newval, err = shared_status:incr(server_key .. RESPONSE_CODE .. status, 1)
-        if not newval and err == "not found" then
-            shared_status:set(server_key .. RESPONSE_CODE .. status, 1)
-        end
+        shared_status:incr(server_key .. RESPONSE_CODE .. status, 1, 0)
     else -- 请求被丢弃
-        local newval, err = shared_status:incr(server_key .. DISCARDED, 1)
-        if not newval and err == "not found" then
-            shared_status:set(server_key .. DISCARDED, 1)
-        end
+        shared_status:incr(server_key .. DISCARDED, 1, 0)
     end
 
     -- received_length sum
@@ -174,10 +120,7 @@ local function hook_for_server()
     shared_status:set(server_key .. RECEIVED, sum + received_length)
 
     -- receive per second
-    local newval, err = shared_status:incr(server_key .. RECEIVED .. cur_seconds, received_length)
-    if not newval and err == "not found" then
-        shared_status:set(server_key .. RECEIVED .. cur_seconds, received_length, TIMEOUT_QPS)
-    end
+    shared_status:incr(server_key .. RECEIVED .. cur_seconds, received_length, 0)
 
     -- sent_length sum
     local sent_length = tonumber(ngx.var.bytes_sent)
@@ -185,41 +128,24 @@ local function hook_for_server()
     shared_status:set(server_key .. SENT, sum + sent_length)
 
     -- send per second
-    local newval, err = shared_status:incr(server_key .. SENT .. cur_seconds, sent_length)
-    if not newval and err == "not found" then
-        shared_status:set(server_key .. SENT .. cur_seconds, sent_length, TIMEOUT_QPS)
-    end
+    shared_status:incr(server_key .. SENT .. cur_seconds, sent_length, 0)
 end
 
 --add global count info
 function _M.log()
-    local host    = ngx.var.host
-    local up_addr = ngx.var.upstream_addr
     local seconds = ngx.time()
     -- requests
 
-    shared_status:incr( TOTAL_COUNT, 1 )
+    shared_status:incr(TOTAL_COUNT, 1, 0)
 
     if tonumber(ngx.var.status) < 400 then
-        shared_status:incr( TOTAL_COUNT_SUCCESS, 1 )
+        shared_status:incr(TOTAL_COUNT_SUCCESS, 1, 0)
     end
 
-    local newval, err = shared_status:incr(CURRENT_QPS .. seconds, 1)
-    if not newval and err == "not found" then
-        shared_status:set(CURRENT_QPS .. seconds, 1)
-    end
-
-    local newval, err = shared_status:incr(TRAFFIC_READ, tonumber(ngx.var.request_length))
-    if not newval and err == "not found" then
-        shared_status:set(TRAFFIC_READ, tonumber(ngx.var.request_length))
-    end
-
-    local newval, err = shared_status:incr(TRAFFIC_WRITE, tonumber(ngx.var.bytes_sent))
-    if not newval and err == "not found" then
-        shared_status:set(TRAFFIC_WRITE, tonumber(ngx.var.bytes_sent))
-    end
-
-    shared_status:incr(TIME_TOTAL, ngx.var.request_time)
+    shared_status:incr(CURRENT_QPS .. seconds, 1, 0)
+    shared_status:incr(TRAFFIC_READ, tonumber(ngx.var.request_length), 0)
+    shared_status:incr(TRAFFIC_WRITE, tonumber(ngx.var.bytes_sent), 0)
+    shared_status:incr(TIME_TOTAL, ngx.var.request_time, 0)
 
     -- upstream
     hook_for_upstream()
@@ -269,7 +195,7 @@ local function get_requests_info()
     return report
 end
 
-function get_upstream_peers_info(upstream_name, peers_info)
+local function get_upstream_peers_info(upstream_name, peers_info)
     local upstream_key = upstream_name .. '_' .. peers_info.name
     local last_seconds = ngx.time() - 1
 
