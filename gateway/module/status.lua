@@ -124,7 +124,7 @@ local function hook_for_server()
 
     -- sent_length sum
     local sent_length = tonumber(ngx.var.bytes_sent)
-    local sum = shared_status:get(server_key .. SENT) or 0
+    sum = shared_status:get(server_key .. SENT) or 0
     shared_status:set(server_key .. SENT, sum + sent_length)
 
     -- send per second
