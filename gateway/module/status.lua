@@ -308,15 +308,15 @@ end
 local function get_upstreams_info()
     local report = {}
 
-    for _, upstream_name in pairs(upstream.get_upstreams()) do
+    for _, upstream_name in ipairs(upstream.get_upstreams()) do
         report[upstream_name] = {}
         report[upstream_name].peers = {}
-        for _, peers_info in pairs(upstream.get_primary_peers(upstream_name)) do
+        for _, peers_info in ipairs(upstream.get_primary_peers(upstream_name)) do
             peers_info.backup = false
             table.insert(report[upstream_name].peers, get_upstream_peers_info(upstream_name, peers_info))
         end
 
-        for _, peers_info in pairs(upstream.get_backup_peers(upstream_name)) do
+        for _, peers_info in ipairs(upstream.get_backup_peers(upstream_name)) do
             peers_info.backup = true
             table.insert(report[upstream_name].peers, get_upstream_peers_info(upstream_name, peers_info))
         end
@@ -332,7 +332,7 @@ local function get_server_zones()
     local server_zones = shared_status:get(SERVER_ZONES)
     if server_zones then
         server_zones = common.json_decode(server_zones)
-        for _, server_zone in pairs(server_zones) do
+        for _, server_zone in ipairs(server_zones) do
             local server_info = {}
             local server_key = SERVER_ZONES .. '_' .. server_zone
             server_info.requests = shared_status:get(server_key) or 0
