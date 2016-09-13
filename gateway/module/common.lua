@@ -32,8 +32,10 @@ function _M.merge_table(base_table, up_table)
 end
 
 function _M.json_decode(str)
-    local json_value = nil
-    pcall(function (str) json_value = cjson.decode(str) end, str)
+    local ok, json_value = pcall(cjson.decode, str)
+    if not ok then
+        json_value = nil
+    end
     return json_value
 end
 
