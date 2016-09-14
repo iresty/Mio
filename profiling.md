@@ -61,5 +61,5 @@ server {
 
 > /root/FlameGraph/flamegraph.pl a.cbt > a.svg
 
-恭喜你，火焰图已经成功生成了，我们用浏览器打开，它应该类似这样子:
-![](flame_graph/hello.svg)
+恭喜你，火焰图已经成功生成了，我们用浏览器[打开它](flame_graph/hello.svg), 应该类似这样子:
+![hello](flame_graph/hello.png)
