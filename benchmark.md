@@ -46,14 +46,14 @@ SELinux status:                 disabled
 
  星号代表的是所有用户。
 
- #### 测试是否支持到 C1000K
+#### 测试是否支持到 C1000K
  别着急，我们先用工具测试下，看我们这样子修改后，是否可以支持 C1000K。
 
  这里有一个开源的工具，来自 SSDB 的作者：https://github.com/ideawu/c1000k。
 
  使用方法非常简单，启动一个服务端和客户端，来测试连接，具体见这个项目的说明。
 
- #### 修改 NGINX 参数
+#### 修改 NGINX 参数
  ```
  user nginx;
 
@@ -72,7 +72,7 @@ SELinux status:                 disabled
  - 调整每个NGINX worker 的连接数限制。
 
 
- #### 压测前的检查
+#### 压测前的检查
  压测前，你需要简单的用 curl 检查下 `Mio`的各个接口是否正常工作，比如：
  > curl -i http://127.0.0.1/hello   
  curl -i http://127.0.0.1:9090/status    
