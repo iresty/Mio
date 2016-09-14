@@ -3,7 +3,8 @@
 这里会介绍两个通用的方法，对于基于 `OpenResty` 的项目都是适用的。
 特别的，火焰图这种动态跟踪的方法不仅对 OpenResty 有用，对其他进程都是非常有效的。
 
-+ 火焰图
+#### 火焰图
+
 我们在 CentOS 7 上面对以下三种情况生成了对应的火焰图，从对比中可以看出 `Mio` 的 CPU 占用。
 
 你需要保证安装了于 kernel 版本号 **完全一致** 的 kernel-debuginfo 和 kernel-devel 包，否则会出现各种诡异问题。
@@ -32,7 +33,9 @@ events {
 
 详细的测试方式和性能测试结果，我们会在 [benchmark](benchmark.md) 里面说明。
 
-1. 直接返回字符串,没有任何 `Mio` 的代码
+--------
+
++ 直接返回字符串,没有任何 `Mio` 的代码
 
 NGINX 的配置段为：
 
@@ -64,7 +67,7 @@ server {
 恭喜你，火焰图已经成功生成了，我们用浏览器[打开它](flame_graph/hello.svg), 应该类似这样子:
 ![hello](flame_graph/hello.png)
 
-2. 在 1 的基础上，加上 Mio 的统计代码(master分支)
++  在 1 的基础上，加上 Mio 的统计代码(master分支)
 
 NGINX 的配置段为：
 
@@ -87,7 +90,7 @@ server {
 这样子，在每个请求的 log 阶段，都会过一遍统计代码。我们来看下这次的[火焰图](flame_graph/master.svg), 应该类似这样子:
 ![hello](flame_graph/master.png)
 
-3. 在 1 的基础上，加上 Mio 的统计代码(develop分支)
++ 在 1 的基础上，加上 Mio 的统计代码(develop分支)
 
 NGINX 的配置段为：
 
@@ -113,7 +116,8 @@ server {
 develop 分支和 master 相比，利用了 OpenResty 1.11.2.1 最新的一个功能，shdict:incr() 新增了一个 init 的参数，删除了不少臃肿代码。
 所以在火焰图上面基本一样。
 
-+ LuaJIT NYI
+#### LuaJIT NYI
+
 以下内容大都摘抄自春哥在邮件列表的答复。
 
 LuaJIT 的运行时环境包括一个用手写汇编实现的 Lua 解释器和一个可以直接生成机器代码的 JIT 编译器。
