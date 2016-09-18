@@ -71,7 +71,10 @@ SELinux status:                 disabled
  - 设置 CPU 亲缘性，防止 CPU 资源使用不均衡。
  - 调整每个NGINX worker 的连接数限制。
 
-
+ 其中第二点和第三点，在 NGINX 1.9.10 以后的版本中可以自动完成，如下面所示：
+ >worker_processes auto;
+ worker_cpu_affinity auto;
+ 
 #### 压测前的检查
  压测前，你需要简单的用 curl 检查下 `Mio`的各个接口是否正常工作，比如：
  > curl -i http://127.0.0.1/hello   
