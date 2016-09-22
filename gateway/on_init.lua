@@ -1,3 +1,5 @@
+require "resty.core"
+
 local status = require "gateway.module.status"
 local common = require "gateway.module.common"
 

@@ -83,8 +83,8 @@ function _M.last_one_minute_report()
         report = common.merge_table(report,
                         common.json_decode(shared_recording_summary:get(seconds - i)) or {})
     end
-    
-    if not report or table_is_array(report) then 
+
+    if not report or table_is_array(report) then
         return {}
     else
         return report
@@ -106,7 +106,7 @@ function _M.history_report()
     end
 
     -- 无数据时可能会等于[]
-    if not report or table_is_array(report) then 
+    if not report or table_is_array(report) then
         return {}
     else
         return report
@@ -117,10 +117,7 @@ end
 function _M.report()
     -- today 的含义是第几天
     local today = math.floor(ngx.time() / 86400) -- 3600 * 24 = 86400
-    local report = shared_summary:get(today) 
-    if report == "[]" then 
-        report = "{}" 
-    end
+    local report = shared_summary:get(today)
 
     return common.json_decode(report)
 end
