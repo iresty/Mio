@@ -21,30 +21,30 @@ sub j {
 	}
 }
 
+
 __DATA__
 
-=== TEST 1: hello, world
+=== TEST 1: simple status
 --- http_config
 include ../../../conf/http.conf;
 --- config
 include ../../../conf/server.conf;
 --- request
-GET /hello
---- response_body
-hello! this is Mio.
---- error_code: 200
+GET /status
+--- response_body_filters eval
+::j("{worker_count}", "{address}", "{generation}")
+--- response_body: 1|127.0.0.1:1984|0
 
 
 
-=== TEST 2: summary
+=== TEST 1: NGINX and ngx_lua version
 --- http_config
 include ../../../conf/http.conf;
 --- config
 include ../../../conf/server.conf;
---- request eval
-["GET /summary", "GET /tt","GET /sleep", "GET /summary"]
---- response_body eval
-["{}\n","{\"msg\":\"404! sorry, not found.\",\"success\":false}\n","", "{}\n"]
---- error_code eval
-["200", "404","200", "200"]
---- SKIP
+--- request
+GET /status
+--- response_body_filters eval
+::j("{nginx_version}", "{ngx_lua_version}")
+--- response_body_like
+\d+\.\d+\.\d+.*|\d+\.\d+\.\d+.*
