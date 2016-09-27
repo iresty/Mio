@@ -92,7 +92,7 @@ SELinux status:                 disabled
 
  比如 `/root/Mio/gateway` 目录，你可能有 Mio 目录的执行权限，却没有 root 的执行权限。你可以 `chmod +x` 来解决，也可以换到其他目录来解决。
 
- #### 开始测试
+#### 开始测试
  这里我们选用最简单易用的 `ab` 来进行压力测试，而不是 loadrunner 和 wrk。毕竟我们的目的很简单，能让NGINX worker 满载就行。
 
  > ab -c 300 -n 1000000 -k 127.0.0.1/hello
