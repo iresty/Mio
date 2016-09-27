@@ -23,13 +23,15 @@ sub j {
 
 __DATA__
 
-=== TEST 1: hello, world
+=== TEST 1: mix summary
 --- http_config
 include ../../../conf/http.conf;
 --- config
 include ../../../conf/server.conf;
---- request
-GET /hello
---- response_body
-hello! this is Mio.
---- error_code: 200
+--- request eval
+["GET /summary", "GET /tt","GET /sleep", "GET /summary"]
+--- response_body eval
+["{}\n","{\"msg\":\"404! sorry, not found.\",\"success\":false}\n","", "{}\n"]
+--- error_code eval
+[200, 404, 200, 200]
+--- SKIP

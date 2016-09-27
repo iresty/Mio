@@ -197,7 +197,6 @@ function _M.log()
     local up_addr = ngx.var.upstream_addr
     local seconds = ngx.time()
     -- requests
-
     shared_status:incr( TOTAL_COUNT, 1 )
 
     if tonumber(ngx.var.status) < 400 then
@@ -363,7 +362,7 @@ function _M.report()
     report.requests     = get_requests_info()
     report.upstreams    = get_upstreams_info()
     report.server_zones = get_server_zones()
-
+    ngx.log(ngx.DEBUG, common.json_encode(report))
     return report
 end
 
