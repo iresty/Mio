@@ -39,7 +39,7 @@ GET /status
 
 
 
-=== TEST 1: NGINX and ngx_lua version
+=== TEST 2: NGINX and ngx_lua version
 --- http_config
 	include ../../../conf/http.conf;
 --- config
@@ -55,7 +55,7 @@ GET /status
 
 
 
-=== TEST 1: simple requests
+=== TEST 3: simple requests
 the status datas ingore the first /status access,
 because the status datas record in log_by_lua phase
 --- http_config
@@ -72,7 +72,7 @@ GET /status
 
 
 
-=== TEST 1:  requests
+=== TEST 4:  '200' and '404' pipeline requests
 --- http_config
 	include ../../../conf/http.conf;
 --- config
@@ -93,3 +93,40 @@ GET /status
  "hello! this is Mio.\n",
 "{\"msg\":\"404! sorry, not found.\",\"success\":false}\n",
 "3\n2\n"]
+
+
+
+=== TEST 5:  proxy requests
+one proxy_pass request should be treated as two requests
+--- http_config
+	include ../../../conf/http.conf;
+	server{
+		listen 1900;
+		server_name  'test_domain';
+		location = /hello {
+			echo 'hello';
+		}
+	}
+--- config
+	include ../../../conf/server.conf;
+	location = /test_proxy {
+	        proxy_pass http://127.0.0.1:1900/hello;
+	    }
+	location = /test {
+	        content_by_lua '
+	            local status = ngx.shared.status
+	            ngx.say(status:get("total_count"))
+				ngx.say(status:get("total_success_count"))
+	        ';
+	    }
+--- request eval
+["GET /test", "GET /hello", "GET /test_proxy", "GET /test"]
+--- error_code eval
+[200, 200, 200, 200]
+--- response_body eval
+["0\n0\n",
+ "hello! this is Mio.\n",
+"hello\n",
+"4\n4\n"]
+--- no_error_log
+[error]
