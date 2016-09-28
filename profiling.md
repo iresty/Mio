@@ -171,6 +171,7 @@ jit.v 模块的输出里如果有类似下面这种带编号的 TRACE 行，则�
 类似的例子还有下面这些：
 
 >    [TRACE --- exit.lua:27 -- NYI: FastFunc coroutine.yield at waf-core.lua:439]
+
 >    [TRACE --- waf.lua:321 -- NYI: bytecode 51 at raven.lua:107]
 
 上面第二行是因为操作码 51 的 LuaJIT 字节码也是 NYI 原语，编译不了。
@@ -178,8 +179,10 @@ jit.v 模块的输出里如果有类似下面这种带编号的 TRACE 行，则�
 那么我们如何知道 51 字节码究竟是啥呢？我们可以用 nginx-devel-utils 项目中的 ljbc.lua 脚本来取得 51 号字节码的名字：
 
 >    $ /usr/local/openresty/luajit/bin/luajit-2.1.0-alpha ljbc.lua 51
-    opcode 51:
-    FNEW
+
+>    opcode 51:
+
+>    FNEW
 
 我们看到原来是用来（动态）创建 Lua 函数的 FNEW 字节码。ljbc.lua 脚本的位置是
 
