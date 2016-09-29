@@ -7,14 +7,16 @@ local mt = { __index = _M }
 local default_ttl = 1
 local ngx_now = ngx.now
 
-function _M.hincr( key, field, increment )
-    local increment = increment or 1
-    local cur_value = lru_s:get(key) or {}
-    cur_value[field] = (cur_value[field] or 0) + increment
 
-    lru_s:set(key, cur_value, default_ttl)
+function _M.hmincr(key, ...)
+    local value = lru_s:get(key) or {}
+    for i=1, select('#', ...), 2 do
+        local field = select(i, ...)
+        local increment = select(i+1, ...)
+        value[field] = (value[field] or 0) + increment
+    end
+    lru_s:set(key, value, default_ttl)
 end
-
 
 function _M.hset( key, field, value )
     local cur_value = lru_s:get(key) or {}

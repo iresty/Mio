@@ -70,10 +70,7 @@ function _M.log()
     local status = math.floor(tonumber(ngx.var.status) / 100) .. 'xx'
     local sent_length = tonumber(ngx.var.bytes_sent)
     local request_time = tonumber(ngx.var.request_time)
-    uri_lrucache.hincr(uri, "total")
-    uri_lrucache.hincr(uri, status)
-    uri_lrucache.hincr(uri, "sent", sent_length)
-    uri_lrucache.hincr(uri, "request_time", request_time)
+    uri_lrucache.hmincr(uri, "total", 1, status, 1, "sent", sent_length, "request_time", request_time)
 end
 
 function _M.last_one_minute_report()
