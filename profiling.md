@@ -30,8 +30,11 @@ events {
 }
 ```
 
-使用 ab 进行压力测试，你需要保证 OpenResty 所有 worker 的 CPU 满载:
-> ab -c 300 -n 1000000 -k 127.0.0.1/hello
+不推荐使用 ab 来进行压力测试，因为 ab 很难让 OpenResty 所有 worker 的 CPU 满载。
+这里我们使用 [wrk](https://github.com/wg/wrk) 来进行压力测试:
+> wrk -t50 -c100 -d60s http://127.0.0.1/hello
+
+wrk 这几个参数含义是，使用 50 个线程，100 个 http 并发连接，持续 60 秒的压力测试。
 
 详细的测试方式和性能测试结果，我们会在 [benchmark](benchmark.md) 里面说明。
 
@@ -57,7 +60,7 @@ server {
     }
 }
 ```
-可以看到所有注入到执行阶段的代码都被注释掉了。在 ab 开始压力测试后，我们来生成火焰图（假设 NGINX 的 worker 进程 pid 是 4555）：
+可以看到所有注入到执行阶段的代码都被注释掉了。在开始压力测试后，我们来生成火焰图（假设 NGINX 的 worker 进程 pid 是 4555）：
 > ./sample-bt -p 4555  -t 5 -u >a.bt
 
 如果有报错，请看下 `a.bt` 是否生成并不会空，因为有些 error 级别的错误也是可以忽略的。
@@ -146,7 +149,7 @@ JIT 编译器不支持的原语被称为 NYI（Not Yet Implemented）原语。�
     v.on("/tmp/jit.log")
 ```
 
-所以我们可以把这两行代码，加入到 Mio 项目的 `gataway/on_init.lua` 代码中。然后重启 OpenResty，再次运行 ab 的压力测试，
+所以我们可以把这两行代码，加入到 Mio 项目的 `gataway/on_init.lua` 代码中。然后重启 OpenResty，再次运行压力测试，
 就可以在 `/tmp/jit.log` 中发现 jit 的跟踪日志。
 
 jit.v 模块的输出里如果有类似下面这种带编号的 TRACE 行，则指示成功编译了的 trace 对象，例如

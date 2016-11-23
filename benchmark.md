@@ -93,12 +93,38 @@ SELinux status:                 disabled
  比如 `/root/Mio/gateway` 目录，你可能有 `/root/Mio` 目录的执行权限，却没有 `/root` 目录的执行权限。你可以 `chmod +x` 来解决，也可以换到其他目录来解决。
 
 #### 开始测试
- 这里我们选用最简单易用的 `ab` 来进行压力测试，而不是 loadrunner 和 wrk。毕竟我们的目的很简单，能让NGINX worker 满载就行。
+ 这里我们选用 `wrk` 来进行压力测试，我们的目的是要让 NGINX worker 满载，而简单的 ab 可能做不到这一点。
 
- > ab -c 300 -n 1000000 -k 127.0.0.1/hello
+ > rk -t50 -c100 -d60s http://127.0.0.1/hello
 
-注意其中的 `-k`，保持 KeepAlive，而不是每次都新建一个连接。
+ wrk 这几个参数含义是，使用 50 个线程，100 个 http 并发连接，持续 60 秒的压力测试。
 
-在我的测试环境中（24 核，32G内存，4个 NGINX worker），单纯的`hello` 接口，以及加入 `Mio` 的统计代码后，QPS 都在 80000 左右，看不到 `Mio` 对 QPS 的影响。
+在我的测试环境中（24 核，32G内存，4个 NGINX worker），单纯的`hello` 接口，压力测试结果是：
+
+```$ wrk -t50 -c100 -d60s http://127.0.0.1/hello
+Running 1m test @ http://127.0.0.1/hello
+  50 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.89ms    1.74ms 149.47ms   99.79%
+    Req/Sec     2.36k   215.54     8.26k    81.96%
+  7046236 requests in 1.00m, 1.31GB read
+Requests/sec: 117242.66
+Transfer/sec:     22.24MB
+```
+
+加入 `Mio` 的统计代码后，压力测试结果是：
+```$ wrk -t50 -c100 -d60s http://127.0.0.1/hello
+Running 1m test @ http://127.0.0.1/hello
+  50 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     1.40ms    3.72ms 243.67ms   99.79%
+    Req/Sec     1.57k   166.29     6.00k    82.67%
+  4676844 requests in 1.00m, 0.87GB read
+Requests/sec:  77818.01
+Transfer/sec:     14.76MB
+```
+
+性能下降了 33% 左右。注意这个是和空跑的逻辑做的对比，也就是最坏的情况。
+如果加了业务逻辑，比如查询下数据库、做几次字符串操作，那么对性能的影响就很低了。
 
 具体的 NGINX 配置参见 [profiling](profiling.md)。
