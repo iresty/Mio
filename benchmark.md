@@ -49,7 +49,7 @@ SELinux status:                 disabled
 #### 测试是否支持到 C1000K
  别着急，我们先用工具测试下，看我们这样子修改后，是否可以支持 C1000K。
 
- 这里有一个开源的工具，来自 SSDB 的作者：https://github.com/ideawu/c1000k。
+ 这里有一个开源的工具，来自 SSDB 的作者：[https://github.com/ideawu/c1000k](https://github.com/ideawu/c1000k)。
 
  使用方法非常简单，启动一个服务端和客户端，来测试连接，具体见这个项目的说明。
 
