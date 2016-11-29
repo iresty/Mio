@@ -101,7 +101,8 @@ SELinux status:                 disabled
 
 在我的测试环境中（24 核，32G内存，4个 NGINX worker），单纯的`hello` 接口，压力测试结果是：
 
-```$ wrk -t50 -c100 -d60s http://127.0.0.1/hello
+```
+$ wrk -t50 -c100 -d60s http://127.0.0.1/hello
 Running 1m test @ http://127.0.0.1/hello
   50 threads and 100 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
@@ -113,7 +114,8 @@ Transfer/sec:     22.24MB
 ```
 
 加入 `Mio` 的统计代码后，压力测试结果是：
-```$ wrk -t50 -c100 -d60s http://127.0.0.1/hello
+```
+$ wrk -t50 -c100 -d60s http://127.0.0.1/hello
 Running 1m test @ http://127.0.0.1/hello
   50 threads and 100 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
