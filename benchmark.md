@@ -95,7 +95,7 @@ SELinux status:                 disabled
 #### 开始测试
  这里我们选用 `wrk` 来进行压力测试，我们的目的是要让 NGINX worker 满载，而简单的 ab 可能做不到这一点。
 
- > rk -t50 -c100 -d60s http://127.0.0.1/hello
+ > wrk -t50 -c100 -d60s http://127.0.0.1/hello
 
  wrk 这几个参数含义是，使用 50 个线程，100 个 http 并发连接，持续 60 秒的压力测试。
 
