@@ -13,7 +13,7 @@
 幸运的是，CentOS 7上面 systemtap 的环境一般都是直接可用的。
 
 生成火焰图还需要安装两个工具集：
-https://github.com/openresty/nginx-systemtap-toolkit 和 https://github.com/brendangregg/FlameGraph，
+https://github.com/openresty/nginx-systemtap-toolkit 和 https://github.com/brendangregg/FlameGraph ，
 请自行安装。
 
 另外需要注意的是，你需要调整系统的 ulimit、tcp 等参数以及 OpenResty 的 worker_processes 和 worker_connections，
